@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Suspense, lazy } from 'react'
 
-function App() {
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
+import SwrGlobalConfig from './components/Swr/SwrGlobalConfig'
+
+const Home = lazy(() => import('./containers/Home/Home'))
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ErrorBoundary fallback={<h1>Global Error</h1>}>
+      <SwrGlobalConfig>
+        <Suspense fallback={<h1>Loading Container...</h1>}>
+          <Home />
+        </Suspense>
+      </SwrGlobalConfig>
+    </ErrorBoundary>
+  )
 }
 
-export default App;
+export default App
